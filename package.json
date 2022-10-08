@@ -1,0 +1,19 @@
+{
+  "name": "download-videos-youtube",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Allyson-Santana/download-videos-youtube.git",
+  "author": "Allyson-Santana <santana.allyson459@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "engines": {
+    "node": "16.15.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ytdl-core": "^4.11.2"
+  }
+}

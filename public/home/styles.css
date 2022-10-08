@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/38816/image-from-rawpixel-id-2210775-jpeg.jpg") center center no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.container {
+  background: #f8f4e5;
+  padding: 50px 100px;
+  border: 2px solid rgba(0,0,0,1);
+  box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px rgba(0,0,0,1);
+}
+
+h2 {
+  color: #f98d62;
+  margin-bottom: 25px;
+}
+
+span {
+  color: #000000;
+  font-size: 14px;
+}
+
+input {
+  padding-bottom: 10px;
+  display: block;
+  width: 100%;
+  font-size:  14pt;
+  line-height: 14pt;
+  font-family:  14pt;
+  border: none;
+  border-bottom: 5px solid rgba(0,0,0,1);
+  background: #f8f4e5;
+  min-width: 250px;
+  padding-left: 5px;
+  outline: none;
+  color: rgba(0,0,0,1);
+}
+  
+input:focus {
+  border-bottom: 5px solid  #ffa580;
+}
+  
+button {
+  display: block;
+  margin: 0 auto;
+  line-height: 14pt;
+  padding: 6px 20px;
+  margin-top: 18pt;
+  background: #ffa580;
+  letter-spacing: 2pt;
+  font-weight: 600;
+  transition: .2s all ease-in-out;
+  outline: none;
+  border: 1px solid rgba(0,0,0,1);
+  box-shadow: 3px 3px 1px 1px #95a4ff, 3px 3px 1px 2px rgba(0,0,0,1);
+  color: #ffffff;
+}
+  
+button:hover {
+  background: rgb(255, 255, 255);
+  color: #ffa580;
+  font-weight: 800;
+  border: 1px solid rgba(0,0,0,1);
+  line-height: 18pt;
+  letter-spacing: 4pt;
+}
+  
+::selection{
+  background:  #ffc8ff;
+}
