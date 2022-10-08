@@ -92,6 +92,16 @@
       background:  #ffc8ff;
     }
 
+    .message {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: x-large;
+      color: #95a4ff;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
   </style>
 
 <body>
@@ -101,11 +111,12 @@
 
     <input id="url-youtube" placeholder="Url do video" type="text" required="true">
     <span>Exemplo: https://www.youtube.com/watch?v=1A8wEcXyySw</span>
-    <span class="message" id="message"></span>
+    <span class="message" id="message">Agurde o processamento do video...</span>
     <button onclick="handlerSubmit()" type="button">DOWNLAOD</button>
   </main>
 
   <script src="./js/script.js"></script>
+
   <script>
         "use strict";
 
@@ -118,13 +129,15 @@
             return;
           }
 
-         let redirect = `${window.location.origin}/download?url=${url}`;
-         
-         window.location.replace(redirect);
-         
-         let msg =  document.querySelector("#message");
+          let redirect = `${window.location.origin}/download?url=${url}`;
+          
+          window.location.replace(redirect);
+          
+          let msg =  document.querySelector("#message");
 
-         msg.innerHTML = "Agurde, processando video...";
+          msg.innerHTML = "Agurde o processamento do video...";
+
+          setTimeout(() => msg.innerHTML = "", 4000);
 
         }
   </script>

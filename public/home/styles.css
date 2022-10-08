@@ -80,3 +80,13 @@ button:hover {
 ::selection{
   background:  #ffc8ff;
 }
+
+.message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+  color: #95a4ff;
+  margin-top: 15px;
+  font-weight: bold;
+}
