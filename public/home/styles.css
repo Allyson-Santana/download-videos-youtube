@@ -32,7 +32,7 @@ span {
   font-size: 14px;
 }
 
-input {
+#url-youtube {
   padding-bottom: 10px;
   display: block;
   width: 100%;
@@ -48,18 +48,18 @@ input {
   color: rgba(0,0,0,1);
 }
   
-input:focus {
+#url-youtube:focus {
   border-bottom: 5px solid  #ffa580;
 }
   
 button {
   display: block;
   margin: 0 auto;
-  line-height: 14pt;
+  line-height: 16pt;
   padding: 6px 20px;
   margin-top: 18pt;
   background: #ffa580;
-  letter-spacing: 2pt;
+  letter-spacing: 4pt;
   font-weight: 600;
   transition: .2s all ease-in-out;
   outline: none;
@@ -73,12 +73,8 @@ button:hover {
   color: #ffa580;
   font-weight: 800;
   border: 1px solid rgba(0,0,0,1);
-  line-height: 18pt;
-  letter-spacing: 4pt;
-}
-  
-::selection{
-  background:  #ffc8ff;
+  line-height: 20pt;
+  letter-spacing: 6pt;
 }
 
 .message {
@@ -89,4 +85,18 @@ button:hover {
   color: #95a4ff;
   margin-top: 15px;
   font-weight: bold;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: large;
+}
+
+form div {
+  margin-bottom: 5px;
 }

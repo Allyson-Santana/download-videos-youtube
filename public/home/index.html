@@ -43,7 +43,7 @@
       font-size: 14px;
     }
 
-    input {
+    #url-youtube {
       padding-bottom: 10px;
       display: block;
       width: 100%;
@@ -59,18 +59,18 @@
       color: rgba(0,0,0,1);
     }
       
-    input:focus {
+    #url-youtube:focus {
       border-bottom: 5px solid  #ffa580;
     }
       
     button {
       display: block;
       margin: 0 auto;
-      line-height: 14pt;
+      line-height: 16pt;
       padding: 6px 20px;
       margin-top: 18pt;
       background: #ffa580;
-      letter-spacing: 2pt;
+      letter-spacing: 4pt;
       font-weight: 600;
       transition: .2s all ease-in-out;
       outline: none;
@@ -84,12 +84,8 @@
       color: #ffa580;
       font-weight: 800;
       border: 1px solid rgba(0,0,0,1);
-      line-height: 18pt;
-      letter-spacing: 4pt;
-    }
-      
-    ::selection{
-      background:  #ffc8ff;
+      line-height: 20pt;
+      letter-spacing: 6pt;
     }
 
     .message {
@@ -102,6 +98,20 @@
       font-weight: bold;
     }
 
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: 10px;
+      font-weight: 500;
+      font-size: large;
+    }
+
+    form div {
+      margin-bottom: 5px;
+    }
+
   </style>
 
 <body>
@@ -112,6 +122,22 @@
     <input id="url-youtube" placeholder="Url do video" type="text" required="true">
     <span>Exemplo: https://www.youtube.com/watch?v=1A8wEcXyySw</span>
     <span class="message" id="message"></span>
+    <form action="" id="formOption">
+      <div class="option">
+        <input name="option" checked value="videoonly" type="radio" />
+        <label for="videoonly">Video</label>
+      </div>
+
+      <div class="option">
+        <input name="option" value="audioonly" type="radio" />
+        <label for="audioonly">Audio</label>
+      </div>
+
+      <div class="option">
+        <input name="option" value="audioandvideo" type="radio" />
+        <label for="audioandvideo">Audio e Video</label>
+      </div>
+    </form>
     <button onclick="handlerSubmit()" type="button">DOWNLAOD</button>
   </main>
 
@@ -120,25 +146,47 @@
   <script>
         "use strict";
 
+        function handlerError(message, time) {
+          let msg =  document.querySelector("#message");
+          msg.innerHTML = message;
+          setTimeout(() => msg.innerHTML = "", time);
+        }
+
         function handlerSubmit() {
           let url_youtube = String(document.querySelector('#url-youtube').value);
           let url = url_youtube.trim();
 
           if (url_youtube === undefined || url_youtube === null || url === '') {
             console.log("Error: URL YouTube is required");
+            handlerError("Qual a URL?", 3000);
             return;
           }
+          
+          var redirect = '';
+          
+          //videoonly, audioonly, audioandvideo
+          const form = document.querySelector('#formOption'); 
+          const option = form.option.value;
 
-          let redirect = `${window.location.origin}/download?url=${url}`;
+          if (option === 'videoonly') {
+            redirect = `${window.location.origin}/download/videoonly?url=${url}`
+          }
+
+          else if (option === 'audioonly') {
+            redirect = `${window.location.origin}/download/audioonly?url=${url}`
+          }
+
+          else if (option === 'audioandvideo') {
+            redirect = `${window.location.origin}/download/audioandvideo?url=${url}`
+          }
+
+          else {
+            handlerError("Escolha uma opção de download", 3000);
+            throw new Error('Option not exists');
+          }
           
           window.location.replace(redirect);
-          
-          let msg =  document.querySelector("#message");
-
-          msg.innerHTML = "Agurde o processamento do video...";
-
-          setTimeout(() => msg.innerHTML = "", 4000);
-
+          handlerError("Agurde o processamento do video...", 4500);
         }
   </script>
 
