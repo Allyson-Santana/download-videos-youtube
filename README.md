@@ -1,20 +1,21 @@
 # download-videos-youtube
 Sistema de download de videos do YouTube
 
+Link prod: https://download-video-youtube.herokuapp.com/home
 
-## Como usa?
+## Como usar?
 
 - Primeiro faça um clone ou fork do projeto
 - Abra o terminal na raiz do projeto e digite `yarn` ou `npm start` para baixar os pacotes
 - Para inicia o projeto digite `yarn run start` ou `npm run start`
 - abra seu browser no `http://localhost:3000`
 
-Link prod: https://download-video-youtube.herokuapp.com/home
+
+## Checklist
 
 - [x] Download de video
 - [x] Download de audio
 - [x] Download de video e audio
-- [X] Aplicar boas praticas Clear-Code
 - [X] Subir Aplicação para o Heroku
 
 
