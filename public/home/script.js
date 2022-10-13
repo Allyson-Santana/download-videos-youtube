@@ -1,40 +1,44 @@
 "use strict";
 
-function handlerSubmit() {
-  let url_youtube = String(document.querySelector('#url-youtube').value);
-  let url = url_youtube.trim();
+        function handlerError(message, time) {
+          let msg =  document.querySelector("#message");
+          msg.innerHTML = message;
+          setTimeout(() => msg.innerHTML = "", time);
+        }
 
-  if (url_youtube === undefined || url_youtube === null || url === '') {
-    console.log("Error: URL YouTube is required");
-    return;
-  }
-  
-  //videoonly, audioonly, audioandvideo
-  const form = document.querySelector('#formOption'); 
-  let redirect = form.option.value;
+        function handlerSubmit() {
+          let url_youtube = String(document.querySelector('#url-youtube').value);
+          let url = url_youtube.trim();
 
-  if (option === 'videoonly') {
-    redirect = `${window.location.origin}/download/videoonly?url=${url}`
-  }
+          if (url_youtube === undefined || url_youtube === null || url === '') {
+            console.log("Error: URL YouTube is required");
+            handlerError("Qual a URL?", 3000);
+            return;
+          }
+          
+          var redirect = '';
+          
+          //videoonly, audioonly, audioandvideo
+          const form = document.querySelector('#formOption'); 
+          const option = form.option.value;
 
-  else if (option === 'audioonly') {
-    redirect = `${window.location.origin}/download/audioonly?url=${url}`
-  }
+          if (option === 'videoonly') {
+            redirect = `${window.location.origin}/download/videoonly?url=${url}`
+          }
 
-  else if (option === 'audioandvideo') {
-    redirect = `${window.location.origin}/download/audioandvideo?url=${url}`
-  }
+          else if (option === 'audioonly') {
+            redirect = `${window.location.origin}/download/audioonly?url=${url}`
+          }
 
-  else {
-    throw new Error('Option not exists');
-  }
-  
-  window.location.replace(redirect);
-  
-  let msg =  document.querySelector("#message");
+          else if (option === 'audioandvideo') {
+            redirect = `${window.location.origin}/download/audioandvideo?url=${url}`
+          }
 
-  msg.innerHTML = "Agurde o processamento do video...";
-
-  setTimeout(() => msg.innerHTML = "", 4000);
-
-}
+          else {
+            handlerError("Escolha uma opção de download", 3000);
+            throw new Error('Option not exists');
+          }
+          
+          window.location.replace(redirect);
+          handlerError("Agurde o processamento do video...", 4500);
+        }

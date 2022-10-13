@@ -2,6 +2,7 @@ import config from "./config.js";
 import { Controller } from './controller.js';
 import ytdl from 'ytdl-core';
 import { getParams } from './util.js';
+import ytmux from "./merge-ytdl-core-muxer.js";
 
 const {
   location,
@@ -122,8 +123,8 @@ async function routes(request, response) {
  
      let url_youTube = String(url);
      
-     return ytdl(url_youTube, {
-       format: 'mp4',
+     return ytmux(url_youTube, {
+      format: 'mp4',
      }).pipe(response);
  
     } catch (error) {
