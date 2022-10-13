@@ -10,4 +10,15 @@ export class Controller {
     return this.service.getFileStream(filename);
   }
 
+  async downloadVideo(request, response) {
+    return this.service.downloadVideo(request, response);
+  }
+
+  async downloadAudio(request, response) {
+    return this.service.downloadAudio(request, response);
+  }
+
+  async downloadAudioAndVideo(request, response) {
+    return this.service.downloadAudioAndVideo(request, response);
+  }
 }

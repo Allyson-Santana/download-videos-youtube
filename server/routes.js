@@ -1,8 +1,6 @@
 import config from "./config.js";
 import { Controller } from './controller.js';
-import ytdl from 'ytdl-core';
 import { getParams } from './util.js';
-import ytmux from "./merge-ytdl-core-muxer.js";
 
 const {
   location,
@@ -16,7 +14,7 @@ const controller = new Controller();
 async function routes(request, response) {
   const { method, path, url } = request;
   
-  console.log( { method, path, url });
+  console.info( { method, path, url });
 
   if( method === 'GET' && path === '/' ) {
     response.writeHead(302, {
@@ -44,94 +42,15 @@ async function routes(request, response) {
   }
 
   else if (method === 'GET' && path === '/download/videoonly') {
-
-    try {
-     const { url } = request.params;
- 
-     if (!url) {
-       response.writeHead(401);
-       return response.end("URL is required.");
-     }
-
-     let nmVideo = (new Date()).getTime().toString();
-
-     response.setHeader('Content-Type', 'video/mp4');
-     response.setHeader('Content-Disposition', 'attachment; filename="v'+nmVideo+'.mp4"');
-     response.writeHead(200, {'Content-Type': 'video/mp4'});
- 
-     let url_youTube = String(url);
- 
-     return ytdl(url_youTube, {
-       format: 'mp4',
-       quality: 'highest',
-       filter: 'videoonly'
-     }).pipe(response);
- 
-    } catch (error) {
-     response.writeHead(400);
-     return response.end();
-    }
- 
+     return controller.downloadVideo(request, response);
   }
 
   else if (method === 'GET' && path === '/download/audioonly') {
-   
-    try {
-     const { url } = request.params;
- 
-     if (!url) {
-       response.writeHead(401);
-       return response.end("URL is required.");
-     }
- 
-     let nmAudio = (new Date()).getTime().toString();
- 
-     response.setHeader('Content-Type', 'audio/mp3');
-     response.setHeader('Content-Disposition', 'attachment; filename="a'+nmAudio+'.mp3"');
-     response.writeHead(200, {'Content-Type': 'audio/mp3'});
- 
-     let url_youTube = String(url);
-     
-     return ytdl(url_youTube, {
-       format: 'mp3',
-       quality: 'highest',
-       filter: 'audioonly' 
-     }).pipe(response);
- 
-    } catch (error) {
-     response.writeHead(400);
-     return response.end();
-    }
- 
+    return controller.downloadAudio(request, response); 
   }
 
   else if (method === 'GET' && path === '/download/audioandvideo') {
-   
-    try {
-     const { url } = request.params;
- 
-     if (!url) {
-       response.writeHead(401);
-       return response.end("URL is required.");
-     }
- 
-     let nm = (new Date()).getTime().toString();
- 
-     response.setHeader('Content-Type', 'video/mp4');
-     response.setHeader('Content-Disposition', 'attachment; filename="va'+nm+'.mp4"');
-     response.writeHead(200, {'Content-Type': 'video/mp4'});
- 
-     let url_youTube = String(url);
-     
-     return ytmux(url_youTube, {
-      format: 'mp4',
-     }).pipe(response);
- 
-    } catch (error) {
-     response.writeHead(400);
-     return response.end();
-    }
- 
+    return controller.downloadAudioAndVideo(request, response); 
   }
 
   else {
@@ -153,16 +72,16 @@ function handlerError(err, response) {
 export function handler(request, response) {
   request.params = getParams(request);
 
-  	// Set CORS headers
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Request-Method', 'GET');
-    response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
-    response.setHeader('Access-Control-Allow-Headers', '*');
-    if ( request.method === 'OPTIONS' ) {
-      response.writeHead(200);
-      response.end();
-      return;
-    }
+  // Set CORS headers
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  response.setHeader('Access-Control-Request-Method', 'GET');
+  response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+  response.setHeader('Access-Control-Allow-Headers', '*');
+  if ( request.method === 'OPTIONS' ) {
+    response.writeHead(200);
+    response.end();
+    return;
+  }  
 
   let [origin, _] = request.url.split('?');
   request.path = origin;
@@ -170,4 +89,5 @@ export function handler(request, response) {
   return routes(request, response).catch(err => {
     handlerError(err, response);
   })
+
 }
