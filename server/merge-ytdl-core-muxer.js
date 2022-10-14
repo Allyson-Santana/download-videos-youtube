@@ -10,7 +10,7 @@ import cp from'child_process';
 import stream from'stream';
 
 // default export: the ffmpeg muxer
-const ytmux = function(link, options = {}) {
+function ytmux(link, options = {}) {
     const result = new stream.PassThrough({ highWaterMark: options.highWaterMark || 1024 * 512 });
     ytdl.getInfo(link, options).then(info => {
         let audioStream = ytdl.downloadFromInfo(info, { ...options, quality: 'highestaudio' });

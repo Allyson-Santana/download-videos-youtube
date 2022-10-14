@@ -24,11 +24,9 @@ async function routes(request, response) {
   }
   
   else if (method === 'GET' && path === '/home' || path === '/download') {
-
     response.writeHead(200, {'Content-Type': 'text/html'});
-
-    let dir = `${publicDirectory}/home/index.html`;
     
+    const dir = `${publicDirectory}/home/index.html`;    
     const { error, data } = await controller.getFileStream(dir);
 
     if (error) {

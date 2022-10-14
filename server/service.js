@@ -1,4 +1,6 @@
 import { readFile } from 'fs/promises';
+import { PassThrough } from 'stream';
+import { pipeline } from 'stream/promises';
 import ytdl from 'ytdl-core';
 import ytmux from "./merge-ytdl-core-muxer.js";
 
@@ -37,14 +39,24 @@ export class Service {
       response.setHeader('Content-Type', 'video/mp4');
       response.setHeader('Content-Disposition', 'attachment; filename="v'+nmVideo+'.mp4"');
       response.writeHead(200, {'Content-Type': 'video/mp4'});
-  
+
       let url_youTube = String(url);
-  
-      return ytdl(url_youTube, {
+
+      let stream = ytdl(url_youTube, {
         format: 'mp4',
         quality: 'highest',
-        filter: 'videoonly'
+        filter: 'videoonly', 
       }).pipe(response);
+      
+      stream.on('progress', (chunkLength, downloaded, total) => {
+        if (downloaded === total) {
+          response.setHeader('Content-Length', total);
+        }
+      })
+
+      stream.on('finish', () => {
+        return response.end();
+      });       
   
      } catch (error) {
       response.writeHead(400);
@@ -68,12 +80,22 @@ export class Service {
       response.writeHead(200, {'Content-Type': 'audio/mp3'});
   
       let url_youTube = String(url);
-      
-      return ytdl(url_youTube, {
+
+      let stream = ytdl(url_youTube, {
         format: 'mp3',
         quality: 'highest',
         filter: 'audioonly' 
       }).pipe(response);
+      
+      stream.on('progress', (chunkLength, downloaded, total) => {
+        if (downloaded === total) {
+          response.setHeader('Content-Length', total);
+        }
+      })
+
+      stream.on('finish', () => {
+        return response.end();
+      });       
   
      } catch (error) {
       response.writeHead(400);
@@ -98,9 +120,19 @@ export class Service {
   
       let url_youTube = String(url);
       
-      return ytmux(url_youTube, {
+      let stream = ytmux(url_youTube, {
       format: 'mp4',
       }).pipe(response);
+           
+      stream.on('progress', (chunkLength, downloaded, total) => {
+        if (downloaded === total) {
+          response.setHeader('Content-Length', total);
+        }
+      })
+
+      stream.on('finish', () => {
+        return response.end();
+      }); 
   
     } catch (error) {
       response.writeHead(400);
