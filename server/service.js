@@ -3,6 +3,10 @@ import { PassThrough } from 'stream';
 import { pipeline } from 'stream/promises';
 import ytdl from 'ytdl-core';
 import ytmux from "./merge-ytdl-core-muxer.js";
+import https from 'https'
+
+import urlLib from 'url'
+import { getContentLength } from './util.js';
 
 export class Service {
 
@@ -38,21 +42,19 @@ export class Service {
 
       response.setHeader('Content-Type', 'video/mp4');
       response.setHeader('Content-Disposition', 'attachment; filename="v'+nmVideo+'.mp4"');
-      response.writeHead(200, {'Content-Type': 'video/mp4'});
 
       let url_youTube = String(url);
+
+      const contentLength = await getContentLength(url_youTube);
+      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'video/mp4' });
 
       let stream = ytdl(url_youTube, {
         format: 'mp4',
         quality: 'highest',
         filter: 'videoonly', 
-      }).pipe(response);
-      
-      stream.on('progress', (chunkLength, downloaded, total) => {
-        if (downloaded === total) {
-          response.setHeader('Content-Length', total);
-        }
       })
+
+      stream.pipe(response);
 
       stream.on('finish', () => {
         return response.end();
@@ -77,25 +79,23 @@ export class Service {
   
       response.setHeader('Content-Type', 'audio/mp3');
       response.setHeader('Content-Disposition', 'attachment; filename="a'+nmAudio+'.mp3"');
-      response.writeHead(200, {'Content-Type': 'audio/mp3'});
   
       let url_youTube = String(url);
+
+      const contentLength = await getContentLength(url_youTube);
+      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'video/mp4' });
 
       let stream = ytdl(url_youTube, {
         format: 'mp3',
         quality: 'highest',
         filter: 'audioonly' 
-      }).pipe(response);
-      
-      stream.on('progress', (chunkLength, downloaded, total) => {
-        if (downloaded === total) {
-          response.setHeader('Content-Length', total);
-        }
       })
+      
+      stream.pipe(response);
 
       stream.on('finish', () => {
         return response.end();
-      });       
+      });    
   
      } catch (error) {
       response.writeHead(400);
@@ -116,23 +116,21 @@ export class Service {
   
       response.setHeader('Content-Type', 'video/mp4');
       response.setHeader('Content-Disposition', 'attachment; filename="va'+nm+'.mp4"');
-      response.writeHead(200, {'Content-Type': 'video/mp4'});
   
       let url_youTube = String(url);
+
+      const contentLength = await getContentLength(url_youTube);
+      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'video/mp4' });
       
       let stream = ytmux(url_youTube, {
-      format: 'mp4',
-      }).pipe(response);
-           
-      stream.on('progress', (chunkLength, downloaded, total) => {
-        if (downloaded === total) {
-          response.setHeader('Content-Length', total);
-        }
+        format: 'mp4',
       })
+      
+      stream.pipe(response);
 
       stream.on('finish', () => {
         return response.end();
-      }); 
+      });       
   
     } catch (error) {
       response.writeHead(400);
