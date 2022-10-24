@@ -3,3 +3,7 @@
 
 #node_modules
 node_modules/
+
+#extras
+*.mp4
+*.mp3

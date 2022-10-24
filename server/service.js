@@ -1,12 +1,9 @@
 import { readFile } from 'fs/promises';
-import { PassThrough } from 'stream';
-import { pipeline } from 'stream/promises';
 import ytdl from 'ytdl-core';
 import ytmux from "./merge-ytdl-core-muxer.js";
-import https from 'https'
-
-import urlLib from 'url'
 import { getContentLength } from './util.js';
+import mergeVideoAudio from './merge-video-audio.js';
+import { resolve } from 'path'
 
 export class Service {
 
@@ -138,6 +135,30 @@ export class Service {
     }
   }
 
+  async mergeAudioAndVideo(request, response) {
+    try {
+   
+      let nm = (new Date()).getTime().toString();
+  
+      response.setHeader('Content-Type', 'video/mp4');
+      response.setHeader('Content-Disposition', 'attachment; filename="va'+nm+'.mp4"');
 
+      response.writeHead(200, {'Content-Type': 'video/mp4' });
+      
+      try {
+        let stream = mergeVideoAudio(resolve('./server/aula01.mp4'), resolve('./server/audio01.mp3'));
+        
+        stream.pipe(response);
+  
+        stream.on('finish', () => response.end());    
+      } catch (error) {
+        console.error("OPA => ", error)
+      }
+  
+    } catch (error) {
+      response.writeHead(400);
+      return response.end();
+    }
+  }
 
 }

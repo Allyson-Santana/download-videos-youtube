@@ -21,4 +21,8 @@ export class Controller {
   async downloadAudioAndVideo(request, response) {
     return this.service.downloadAudioAndVideo(request, response);
   }
+
+  async mergeAudioAndVideo(request, response) {
+    return this.service.mergeAudioAndVideo(request, response);
+  }
 }
