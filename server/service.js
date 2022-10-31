@@ -137,8 +137,8 @@ export class Service {
 
   async mergeAudioAndVideo(request, response) {
     try {
-   
-      let nm = (new Date()).getTime().toString();
+
+      let nm =(new Date()).getTime().toString();
   
       response.setHeader('Content-Type', 'video/mp4');
       response.setHeader('Content-Disposition', 'attachment; filename="va'+nm+'.mp4"');
@@ -146,7 +146,10 @@ export class Service {
       response.writeHead(200, {'Content-Type': 'video/mp4' });
       
       try {
-        let stream = mergeVideoAudio(resolve('./server/aula01.mp4'), resolve('./server/audio01.mp3'));
+        const nameVideo = resolve('./');
+        const nameAudio = resolve('./');
+
+        let stream = mergeVideoAudio(nameVideo, nameAudio);
         
         stream.pipe(response);
   

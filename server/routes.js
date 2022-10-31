@@ -51,9 +51,9 @@ async function routes(request, response) {
     return controller.downloadAudioAndVideo(request, response); 
   }
 
-  else if (method === 'GET' && path === '/mergeaudioandvideo') {
-    return controller.mergeAudioAndVideo(request, response); 
-  }
+  // else if (method === 'GET' && path === '/mergeaudioandvideo') {
+  //   return controller.mergeAudioAndVideo(request, response); 
+  // }
 
   else {
     response.writeHead(404);
