@@ -14,7 +14,7 @@ const controller = new Controller();
 async function routes(request, response) {
   const { method, path, url } = request;
   
-  console.info( { method, path, url });
+  // console.info( { method, path, url });
 
   if( method === 'GET' && path === '/' ) {
     response.writeHead(302, {
