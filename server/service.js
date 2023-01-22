@@ -74,13 +74,14 @@ export class Service {
   
       let nmAudio = (new Date()).getTime().toString();
   
-      response.setHeader('Content-Type', 'audio/mp3');
+      response.setHeader('Content-Type', 'audio/mpeg');
       response.setHeader('Content-Disposition', 'attachment; filename="a'+nmAudio+'.mp3"');
   
       let url_youTube = String(url);
 
       const contentLength = await getContentLength(url_youTube);
-      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'video/mp4' });
+      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'audio/mpeg' });
+      
 
       let stream = ytdl(url_youTube, {
         format: 'mp3',
@@ -91,6 +92,7 @@ export class Service {
       stream.pipe(response);
 
       stream.on('finish', () => {
+        console.log("FINISHHH");
         return response.end();
       });    
   
