@@ -1,4 +1,4 @@
-import https from 'https'
+import https from 'node:https'
 import ytdl from 'ytdl-core';
 import urlLib from 'url'
 

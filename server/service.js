@@ -1,9 +1,9 @@
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 import ytdl from 'ytdl-core';
 import ytmux from "./merge-ytdl-core-muxer.js";
 import { getContentLength } from './util.js';
 import mergeVideoAudio from './merge-video-audio.js';
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
 export class Service {
 
@@ -42,8 +42,8 @@ export class Service {
 
       let url_youTube = String(url);
 
-      const contentLength = await getContentLength(url_youTube);
-      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'video/mp4' });
+      // const contentLength = await getContentLength(url_youTube);
+      // response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'video/mp4' });
 
       let stream = ytdl(url_youTube, {
         format: 'mp4',
@@ -56,6 +56,12 @@ export class Service {
       stream.on('finish', () => {
         return response.end();
       });       
+
+
+      request.once('close', () => {
+        response.end();
+        return;
+      })
   
      } catch (error) {
       response.writeHead(400);
@@ -79,8 +85,8 @@ export class Service {
   
       let url_youTube = String(url);
 
-      const contentLength = await getContentLength(url_youTube);
-      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'audio/mpeg' });
+      // const contentLength = await getContentLength(url_youTube);
+      // response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'audio/mpeg' });
       
 
       let stream = ytdl(url_youTube, {
@@ -93,8 +99,13 @@ export class Service {
 
       stream.on('finish', () => {
         console.log("FINISHHH");
-        return response.end();
-      });    
+        response.end();
+      });
+
+      request.once('close', () => {
+        response.end();
+        return;
+      })
   
      } catch (error) {
       response.writeHead(400);
@@ -118,18 +129,19 @@ export class Service {
   
       let url_youTube = String(url);
 
-      const contentLength = await getContentLength(url_youTube);
-      response.writeHead(200, {'Content-Length': contentLength, 'Content-Type': 'video/mp4' });
-      
-      let stream = ytmux(url_youTube, {
+      // const contentLength = await getContentLength(url_youTube);
+      // response.setHeader('Content-Length', contentLength)
+      response.setHeader('Content-Type', 'video/mp4')
+
+      let stream = ytmux(request, url_youTube, {
         format: 'mp4',
-      })
+      });
       
       stream.pipe(response);
 
       stream.on('finish', () => {
         return response.end();
-      });       
+      });
   
     } catch (error) {
       response.writeHead(400);

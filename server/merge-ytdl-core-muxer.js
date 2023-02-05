@@ -10,7 +10,7 @@ import cp from'child_process';
 import stream from'stream';
 
 // default export: the ffmpeg muxer
-function ytmux(link, options = {}) {
+function ytmux(request, link, options = {}) {
     const result = new stream.PassThrough({ highWaterMark: options.highWaterMark || 1024 * 512 });
     ytdl.getInfo(link, options).then(info => {
         let audioStream = ytdl.downloadFromInfo(info, { ...options, quality: 'highestaudio' });
@@ -40,6 +40,11 @@ function ytmux(link, options = {}) {
         audioStream.pipe(ffmpegProcess.stdio[3]);
         videoStream.pipe(ffmpegProcess.stdio[4]);
         ffmpegProcess.stdio[5].pipe(result);
+
+        request.once('close', () => {
+            console.info('Finish -> destroy process')
+            ffmpegProcess.kill();
+        })  
     });
     return result;
 };

@@ -15,6 +15,9 @@ async function routes(request, response) {
   const { method, path, url } = request;
   
   // console.info( { method, path, url });
+  if ( method === "OPTIONS" ) {
+    response
+  }
 
   if( method === 'GET' && path === '/' ) {
     response.writeHead(302, {
@@ -68,19 +71,26 @@ function handlerError(err, response) {
   }
   console.error(`caught error on API: ${error.stack}`);
   response.writeHead(500);
-  return response.end();
+  response.end();
+  return;
 }
 
 export function handler(request, response) {
   request.params = getParams(request);
 
   // Set CORS headers
-  response.setHeader('Access-Control-Allow-Origin', '*');
-  response.setHeader('Access-Control-Request-Method', 'GET');
-  response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
-  response.setHeader('Access-Control-Allow-Headers', '*');
+  // response.setHeader('Access-Control-Allow-Origin', '*');
+  // response.setHeader('Access-Control-Request-Method', 'GET');
+  // response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+  // response.setHeader('Access-Control-Allow-Headers', '*');
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Request-Method': 'GET',
+    'Access-Control-Allow-Methods': 'OPTIONS, GET',
+    'Access-Control-Allow-Headers': '*'
+  }
   if ( request.method === 'OPTIONS' ) {
-    response.writeHead(200);
+    response.writeHead(204, headers);
     response.end();
     return;
   }  
